@@ -1,0 +1,12 @@
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+instance/
+.venv/
+env/
+venv/
+*.db
+*.log
+*.pid
+*.gz
