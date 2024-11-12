@@ -1,0 +1,13 @@
+fastapi
+pydantic
+pandas
+uvicorn
+asyncpg
+sqlalchemy
+flasgger
+flask_cors
+flask
+cx_Oracle
+openpyxl
+# dotenv
+# connexion

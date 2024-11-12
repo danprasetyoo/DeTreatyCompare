@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: comparetify:1.0
+    container_name: comparetify-backend
+    ports:
+      - "5000:5000"
+    networks:
+      - comparetify
+    env_file:
+      - config/.env
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ../comparetify-frontend
+      dockerfile: Dockerfile
+    container_name: comparetify-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - comparetify
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:5000
+
+  db:
+    image: postgres:13
+    container_name: comparetify-db
+    ports:
+      - "5432:5432"
+    networks:
+      - comparetify
+    environment:
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: your_database
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+
+networks:
+  comparetify:
+    name: comparetify
