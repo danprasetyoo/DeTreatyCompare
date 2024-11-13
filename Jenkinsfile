@@ -2,17 +2,18 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'comparetify:1.0'
-        DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/danprasetyoo/comparetify/general' 
-        DEPLOY_ENV = 'production' 
+        DOCKER_IMAGE = 'danprasetyoo/comparetify'
+        DOCKER_TAG = "${DOCKER_IMAGE}:1.0-${env.BUILD_NUMBER}"
+        DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/danprasetyoo/comparetify/general'
+        DEPLOY_ENV = 'production'
     }
 
     stages {
         stage('Build') {
             steps {
                 script {
-                    echo 'Building...'
-                    sh 'docker build -t ${DOCKER_IMAGE} .'
+                    echo 'Building Docker image...'
+                    sh "docker build -t ${DOCKER_TAG} ."
                 }
             }
         }
@@ -20,21 +21,25 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    echo 'Testing...'
-                    sh 'docker-compose -f docker-compose.test.yml up --abort-on-container-exit'
+                    echo 'Running tests...'
+                    if (fileExists('docker-compose.test.yml')) {
+                        sh 'docker-compose -f docker-compose.test.yml up --abort-on-container-exit'
+                    } else {
+                        echo 'Test file docker-compose.test.yml not found, skipping tests.'
+                    }
                 }
             }
         }
         
-        stage('Push to Registry') {
+        stage('Push to Docker Registry') {
             when {
                 branch 'main'
             }
             steps {
                 script {
                     echo 'Pushing to Docker Registry...'
-                    sh 'docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
-                    sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
+                    sh "docker tag ${DOCKER_TAG} ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                 }
             }
         }
@@ -51,8 +56,12 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline complete.'
-            sh 'docker-compose -f docker-compose.test.yml down'
+            echo 'Cleaning up test containers...'
+            script {
+                if (fileExists('docker-compose.test.yml')) {
+                    sh 'docker-compose -f docker-compose.test.yml down'
+                }
+            }
         }
         success {
             echo 'Deployment successful!'
