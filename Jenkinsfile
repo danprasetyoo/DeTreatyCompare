@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'comparetify:1.0'
-        DOCKER_REGISTRY = 'your_registry_url' 
+        DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/danprasetyoo/comparetify/general' 
         DEPLOY_ENV = 'production' 
     }
 
