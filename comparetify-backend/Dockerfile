@@ -8,7 +8,7 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV FLASK_APP=app.main  
+ENV FLASK_APP=app.main
 ENV FLASK_ENV=development  
 
 COPY . .

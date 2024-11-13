@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./
+      context: ../comparetify-backend
       dockerfile: Dockerfile
     image: comparetify:1.0
     container_name: comparetify-backend
@@ -12,9 +12,9 @@ services:
     networks:
       - comparetify
     env_file:
-      - config/.env
+      - ../comparetify-backend/config/.env
     volumes:
-      - .:/app
+      - ../comparetify-backend:/app
     depends_on:
       - db
 
