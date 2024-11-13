@@ -2,18 +2,17 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'danprasetyoo/comparetify:1.0'  
-        IMAGE_TAG = '1.0'
+        DOCKER_IMAGE = 'comparetify:1.0'
+        DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/danprasetyoo/comparetify/general' 
         DEPLOY_ENV = 'production' 
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'         // Jenkins credentials ID for Docker Hub
     }
 
     stages {
         stage('Build') {
             steps {
                 script {
-                    echo 'Building Docker image...'
-                    sh "docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} ."
+                    echo 'Building...'
+                    sh 'docker build -t ${DOCKER_IMAGE} .'
                 }
             }
         }
@@ -21,25 +20,21 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    echo 'Running tests...'
+                    echo 'Testing...'
                     sh 'docker-compose -f docker-compose.test.yml up --abort-on-container-exit'
                 }
             }
         }
         
-        stage('Push to Docker Registry') {
+        stage('Push to Registry') {
             when {
                 branch 'main'
             }
             steps {
                 script {
-                    echo 'Logging into Docker Hub...'
-                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
-                    }
-                    echo 'Pushing Docker image to registry...'
-                    sh "docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                    sh "docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    echo 'Pushing to Docker Registry...'
+                    sh 'docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
+                    sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
                 }
             }
         }
@@ -47,7 +42,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    echo 'Deploying application...'
+                    echo 'Deploying...'
                     sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
@@ -56,7 +51,7 @@ pipeline {
 
     post {
         always {
-            echo 'Cleaning up test containers...'
+            echo 'Pipeline complete.'
             sh 'docker-compose -f docker-compose.test.yml down'
         }
         success {
