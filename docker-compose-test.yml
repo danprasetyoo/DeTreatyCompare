@@ -47,7 +47,7 @@ services:
 
 networks:
   comparetify-test:
-    driver: bridge
+    name: comparetify-test
 
 volumes:
   db-data-test:  # Deklarasi volume db-data-test untuk database
