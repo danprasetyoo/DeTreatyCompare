@@ -5,19 +5,19 @@ services:
     build:
       context: comparetify-backend
       dockerfile: Dockerfile.test
-    image: comparetify-test:1.0  
+    image: comparetify-test:1.0
     container_name: comparetify-backend-test
     ports:
-      - "5001:5000"  
+      - "5001:5000"
     networks:
       - comparetify-test
     env_file:
-      - comparetify-backend/config/.env  
+      - comparetify-backend/config/.env
     volumes:
-      - comparetify-backend/app
+      - ./comparetify-backend/app:/app  # Mount volume untuk backend ke /app di container
     depends_on:
       - db
-    command: ["pytest", "comparetify-backend/app/test_main.py", "--disable-warnings"]  
+    command: ["pytest", "comparetify-backend/app/test_main.py", "--disable-warnings"]
 
   frontend:
     build:
@@ -25,17 +25,17 @@ services:
       dockerfile: Dockerfile
     container_name: comparetify-frontend-test
     ports:
-      - "3001:3000"  
+      - "3001:3000"
     networks:
       - comparetify-test
     environment:
-      - REACT_APP_BACKEND_URL=http://backend:5001  
+      - REACT_APP_BACKEND_URL=http://backend:5001
 
   db:
     image: postgres:13
     container_name: comparetify-db-test
     ports:
-      - "5433:5432"  
+      - "5433:5432"
     networks:
       - comparetify-test
     environment:
@@ -43,8 +43,11 @@ services:
       POSTGRES_PASSWORD: test_password
       POSTGRES_DB: test_database
     volumes:
-      - db-data-test:/var/lib/postgresql/data_test 
+      - db-data-test:/var/lib/postgresql/data_test
 
 networks:
   comparetify-test:
     driver: bridge
+
+volumes:
+  db-data-test:  # Deklarasi volume db-data-test untuk database
