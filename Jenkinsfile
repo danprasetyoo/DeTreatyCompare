@@ -13,26 +13,25 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker image...'
-                    sh "sudo docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
+                    sh "sudo -S docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
                 }
             }
         }
-
 
         stage('Test') {
             steps {
                 script {
                     echo 'Running tests...'
                     if (fileExists('docker-compose-test.yml')) {
-                        sh 'echo $PASSWORD | sudo -S docker-compose -f docker-compose-test.yml up --build'
+                        // sh 'sudo -S docker-compose -f docker-compose-test.yml build'
+                        sh 'sudo -S docker-compose -f docker-compose-test.yml up --abort-on-container-exit --exit-code-from backend'
                     } else {
                         echo 'Test file docker-compose-test.yml not found, skipping tests.'
                     }
                 }
             }
         }
-        
-        
+
         stage('Push to Docker Registry') {
             when {
                 branch 'master'
@@ -45,12 +44,12 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Deploy') {
             steps {
                 script {
                     echo 'Deploying...'
-                    sh 'echo $PASSWORD | sudo -S docker-compose -f docker-compose.yml up build -d'
+                    sh 'echo $PASSWORD | sudo -S docker-compose -f docker-compose.yml up --build -d'
                 }
             }
         }
@@ -60,8 +59,8 @@ pipeline {
         always {
             echo 'Cleaning up test containers...'
             script {
-                if (fileExists('comparetify-config/docker-compose-test.yml')) {
-                    sh 'sudo -S docker-compose -f comparetify-config/docker-compose-test.yml down'
+                if (fileExists('docker-compose-test.yml')) {
+                    sh 'sudo -S docker-compose -f docker-compose-test.yml down'
                 }
             }
         }
