@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ../comparetify-backend
+      dockerfile: Dockerfile
+    image: comparetify-test:1.0  # use a different tag to separate from the production image if needed
+    container_name: comparetify-backend-test
+    ports:
+      - "5001:5000"  # use a different port if running alongside other containers
+    networks:
+      - comparetify
+    env_file:
+      - ../comparetify-backend/config/.env  # you could use a separate .env.test file if needed
+    volumes:
+      - ../comparetify-backend:/app
+    depends_on:
+      - db
+    command: ["pytest", "--disable-warnings"]  # run tests when container starts
+
+  frontend:
+    build:
+      context: ../comparetify-frontend
+      dockerfile: Dockerfile
+    container_name: comparetify-frontend-test
+    ports:
+      - "3001:3000"  # use a different port for frontend testing if needed
+    networks:
+      - comparetify
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:5001  # updated to test backend service
+
+  db:
+    image: postgres:13
+    container_name: comparetify-db-test
+    ports:
+      - "5433:5432"  # different port for the test DB
+    networks:
+      - comparetify
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_database
+    volumes:
+      - db-data-test:/var/lib/postgresql/data  # separate volume for test data
+
+volumes:
+  db-data-test:
+
+networks:
+  comparetify:
+    name: comparetify-test
