@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'danprasetyoo'
-        DOCKER_IMAGE = 'comparetify'
+        DOCKER_IMAGE = 'danprasetyoo/comparetify'
         DOCKER_TAG = "${DOCKER_IMAGE}:1.0-${env.BUILD_NUMBER}"
         DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/danprasetyoo/comparetify/general'
         DEPLOY_ENV = 'production'
@@ -23,7 +22,7 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests...'
-                    if (fileExists('./comparetify-config/docker-compose.test.yml')) {
+                    if (fileExists('docker-compose.test.yml')) {
                         sh 'echo $PASSWORD | sudo -S docker-compose -f ./comparetify-config/docker-compose.test.yml up --abort-on-container-exit'
                     } else {
                         echo 'Test file docker-compose.test.yml not found, skipping tests.'
@@ -39,8 +38,8 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing to Docker Registry...'
-                    sh "sudo -S docker tag ${DOCKER_TAG} ${DOCKER_USER}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                    sh "sudo -S docker push ${DOCKER_USER}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "sudo -S docker tag ${DOCKER_TAG} ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "sudo -S docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                 }
             }
         }
