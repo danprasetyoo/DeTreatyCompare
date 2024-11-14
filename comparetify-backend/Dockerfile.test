@@ -13,7 +13,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt --root-user-action=ignore
 
 # Set environment variables
-ENV FLASK_APP=app.main_test
+ENV FLASK_APP=app.test_main
 ENV FLASK_ENV=development  
 
 # Copy the rest of the application code
@@ -23,4 +23,4 @@ COPY --chown=appuser:appuser . .
 EXPOSE 5000
 
 # Run tests by default in the test environment
-CMD ["pytest", "comparetify-backend/app/main_test.py", "--disable-warnings"]
+CMD ["pytest", "comparetify-backend/app/test_main.py", "--disable-warnings"]
