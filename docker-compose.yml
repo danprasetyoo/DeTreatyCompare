@@ -14,7 +14,7 @@ services:
     env_file:
       - comparetify-backend/config/.env
     volumes:
-      - comparetify-backend:/app
+      - comparetify-backend/app
     depends_on:
       - db
 

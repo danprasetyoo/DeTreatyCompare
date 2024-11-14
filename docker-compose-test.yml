@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ../comparetify-backend
+      context: comparetify-backend
       dockerfile: Dockerfile.test
     image: comparetify-test:1.0  
     container_name: comparetify-backend-test
@@ -12,16 +12,16 @@ services:
     networks:
       - comparetify-test
     env_file:
-      - ../comparetify-backend/config/.env  
+      - comparetify-backend/config/.env  
     volumes:
-      - ../comparetify-backend:/app
+      - comparetify-backend/app
     depends_on:
       - db
-    command: ["pytest", "comparetify-backend/app/main_test.py", "--disable-warnings"]  
+    command: ["pytest", "comparetify-backend/app/test_main.py", "--disable-warnings"]  
 
   frontend:
     build:
-      context: ../comparetify-frontend
+      context: comparetify-frontend
       dockerfile: Dockerfile
     container_name: comparetify-frontend-test
     ports:
@@ -45,9 +45,6 @@ services:
     volumes:
       - db-data-test:/var/lib/postgresql/data  
 
-volumes:
-  db-data-test:
-
 networks:
   comparetify-test:
-    name: comparetify-test
+    driver: bridge
