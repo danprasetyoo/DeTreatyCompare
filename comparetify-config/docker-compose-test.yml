@@ -17,7 +17,7 @@ services:
       - ../comparetify-backend:/app
     depends_on:
       - db
-    command: ["pytest", "comparetify-backend/app/tests.py", "--disable-warnings"]  
+    command: ["pytest", "comparetify-backend/app/main_test.py", "--disable-warnings"]  
 
   frontend:
     build:

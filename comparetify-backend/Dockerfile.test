@@ -13,7 +13,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt --root-user-action=ignore
 
 # Set environment variables
-ENV FLASK_APP=app.tests
+ENV FLASK_APP=app.main_test
 ENV FLASK_ENV=development  
 
 # Copy the rest of the application code
