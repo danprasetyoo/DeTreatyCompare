@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ../comparetify-backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.test
     image: comparetify-test:1.0  
     container_name: comparetify-backend-test
     ports:
