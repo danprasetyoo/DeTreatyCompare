@@ -43,7 +43,7 @@ services:
       POSTGRES_PASSWORD: test_password
       POSTGRES_DB: test_database
     volumes:
-      - db-data-test:/var/lib/postgresql/data  
+      - db-data-test:/var/lib/postgresql/data_test 
 
 networks:
   comparetify-test:
