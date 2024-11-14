@@ -5,7 +5,7 @@ services:
     build:
       context: comparetify-backend
       dockerfile: Dockerfile
-    image: comparetify:1.0
+    image: comparetify
     container_name: comparetify-backend
     ports:
       - "5000:5000"
