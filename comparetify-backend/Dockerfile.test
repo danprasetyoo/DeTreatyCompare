@@ -1,26 +1,20 @@
 FROM python:3.9-slim
 
-# Create and set up a non-root user
+# Buat user appuser dan set directory kerja
 RUN useradd -m appuser
 WORKDIR /app
 USER appuser
 
-# Copy requirements first to leverage Docker layer caching
-COPY --chown=appuser:appuser requirements.txt . 
-
-# Install dependencies
+# Salin requirements.txt dan instal dependensi
+COPY --chown=appuser:appuser requirements.txt .
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt --root-user-action=ignore
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Set environment variables
-ENV FLASK_APP=app.test_main
-ENV FLASK_ENV=development  
+# Tambahkan ~/.local/bin ke PATH
+ENV PATH="/home/appuser/.local/bin:${PATH}"
 
-# Copy the rest of the application code
+# Salin seluruh kode aplikasi
 COPY --chown=appuser:appuser . .
 
-# Expose the application's port
-EXPOSE 5000
-
-# Run tests by default in the test environment
-CMD ["pytest", "comparetify-backend/app/test_main.py", "--disable-warnings"]
+# Perintah default untuk menjalankan tes
+CMD ["pytest", "app/main_test.py", "--disable-warnings"]
