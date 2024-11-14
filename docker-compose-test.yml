@@ -5,11 +5,11 @@ services:
     build:
       context: ./comparetify-backend
       dockerfile: Dockerfile.test
-    container_name: comparetify-backend-test
+    container_name: comparetify-backend
     ports:
       - "5001:5000"
     volumes:
-      - comparetify-backend:/app  # Gunakan volume bernama comparetify-backend
+      - comparetify-backend:/app 
     networks:
       - comparetify-test
 
@@ -17,25 +17,19 @@ services:
     build:
       context: ./comparetify-frontend
       dockerfile: Dockerfile
-    container_name: comparetify-frontend-test
+    container_name: comparetify-frontend
     ports:
       - "3001:3000"
-    environment:
-      - REACT_APP_BACKEND_URL=http://backend:5001
     networks:
       - comparetify-test
 
   db:
     image: postgres:13
-    container_name: comparetify-db-test
+    container_name: comparetify-db
     ports:
       - "5433:5432"
-    environment:
-      POSTGRES_USER: test_user
-      POSTGRES_PASSWORD: test_password
-      POSTGRES_DB: test_database
     volumes:
-      - db-data-test:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data  # Volume untuk menyimpan data DB
     networks:
       - comparetify-test
 
@@ -45,4 +39,4 @@ networks:
 
 volumes:
   comparetify-backend:  # Deklarasi volume untuk backend
-  db-data-test:         # Deklarasi volume untuk database
+  db-data:              # Deklarasi volume untuk database
