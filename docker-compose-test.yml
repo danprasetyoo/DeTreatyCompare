@@ -14,7 +14,7 @@ services:
     env_file:
       - comparetify-backend/config/.env
     volumes:
-      - ./comparetify-backend/app:/app  # Mount volume untuk backend ke /app di container
+      - comparetify-backend:/app  # Mount volume untuk backend ke /app di container
     depends_on:
       - db
     command: ["pytest", "app/test_main.py", "--disable-warnings"]
