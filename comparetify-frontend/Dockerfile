@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN yarn install
+RUN yarn add react-scripts@latest
+RUN yarn upgrade
 
 COPY . .
 
