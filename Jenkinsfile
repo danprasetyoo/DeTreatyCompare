@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying...'
-                    sh 'sudo docker-compose -f docker-compose.yml up -d'
+                    sh 'echo $PASSWORD | sudo -S docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
