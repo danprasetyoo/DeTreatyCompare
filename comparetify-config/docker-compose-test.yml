@@ -8,11 +8,11 @@ services:
     image: comparetify-test:1.0
     container_name: comparetify-backend-test
     ports:
-      - "5001:5000"  
+      - "5001:5000"
     networks:
-      - comparetify-test
+      - comparetify-test  # Ensure backend uses comparetify-test network
     env_file:
-      - ../comparetify-backend/config/.env  
+      - ../comparetify-backend/config/.env
     volumes:
       - ../comparetify-backend:/app
     depends_on:
@@ -25,29 +25,29 @@ services:
       dockerfile: Dockerfile
     container_name: comparetify-frontend-test
     ports:
-      - "3001:3000"  
+      - "3001:3000"
     networks:
-      - comparetify-test
+      - comparetify-test  # Ensure frontend uses comparetify-test network
     environment:
-      - REACT_APP_BACKEND_URL=http://backend:5001  
+      - REACT_APP_BACKEND_URL=http://backend:5001
 
   db:
     image: postgres:13
     container_name: comparetify-db-test
     ports:
-      - "5433:5432"  
+      - "5433:5432"
     networks:
-      - comparetify-test
+      - comparetify-test  # Ensure db uses comparetify-test network
     environment:
       POSTGRES_USER: test_user
       POSTGRES_PASSWORD: test_password
       POSTGRES_DB: test_database
     volumes:
-      - db-data-test:/var/lib/postgresql/data  
+      - db-data-test:/var/lib/postgresql/data
 
 volumes:
   db-data-test:
 
 networks:
-  comparetify:
-    name: comparetify-test
+  comparetify-test:  # Define the comparetify-test network here
+    driver: bridge
