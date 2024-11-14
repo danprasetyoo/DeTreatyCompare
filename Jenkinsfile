@@ -9,7 +9,16 @@ pipeline {
     }
 
     stages {
-        
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Building Docker image...'
+                    sh "sudo docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
+                }
+            }
+        }
+
+
         stage('Test') {
             steps {
                 script {
@@ -19,16 +28,6 @@ pipeline {
                     } else {
                         echo 'Test file docker-compose-test.yml not found, skipping tests.'
                     }
-                }
-            }
-        }
-
-
-        stage('Build') {
-            steps {
-                script {
-                    echo 'Building Docker image...'
-                    sh "sudo docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
                 }
             }
         }
