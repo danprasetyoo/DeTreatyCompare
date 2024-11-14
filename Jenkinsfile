@@ -33,7 +33,7 @@ pipeline {
         
         stage('Push to Docker Registry') {
             when {
-                branch 'master'
+                branch 'main'
             }
             steps {
                 script {
