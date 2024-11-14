@@ -8,7 +8,9 @@ pipeline {
         DEPLOY_ENV = 'production'
     }
 
-    stage('Test') {
+    stages {
+        
+        stage('Test') {
             steps {
                 script {
                     echo 'Running tests...'
@@ -20,8 +22,8 @@ pipeline {
                 }
             }
         }
+
         
-    stages {
         stage('Build') {
             steps {
                 script {
