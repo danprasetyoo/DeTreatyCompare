@@ -2,7 +2,7 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY comparetify-backend/requirements.txt .
+COPY ./comparetify-backend/requirements.txt .
 
 # RUN apt-get update && apt-get install -y libaio1
 RUN pip install --upgrade pip
