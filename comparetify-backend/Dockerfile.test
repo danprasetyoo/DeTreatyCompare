@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Tambahkan ~/.local/bin ke PATH
 ENV PATH="/home/appuser/.local/bin:${PATH}"
+ENV FLASK_APP=app.test_main
 
 # Salin seluruh kode aplikasi
 COPY --chown=appuser:appuser . .
