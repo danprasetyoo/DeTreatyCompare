@@ -17,4 +17,4 @@ ENV PATH="/home/appuser/.local/bin:${PATH}"
 COPY --chown=appuser:appuser . .
 
 # Perintah default untuk menjalankan tes
-CMD ["pytest", "app/main_test.py", "--disable-warnings"]
+CMD ["pytest", "app/test_main.py", "--disable-warnings"]
