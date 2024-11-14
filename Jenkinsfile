@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'danprasetyoo/comparetify'
-        DOCKER_TAG = "${DOCKER_IMAGE}:1.0-${env.BUILD_NUMBER}"
+        DOCKER_TAG = "${DOCKER_IMAGE}:1.1-${env.BUILD_NUMBER}"
         DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/danprasetyoo/comparetify/general'
         DEPLOY_ENV = 'production'
     }
