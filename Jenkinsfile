@@ -14,6 +14,7 @@ pipeline {
                 script {
                     echo 'Building Docker image...'
                     sh "sudo -S docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile comparetify-backend/"
+                    sh "sudo -S docker build -t ${DOCKER_TAG} -f comparetify-frontend/Dockerfile ."
                 }
             }
         }
