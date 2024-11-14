@@ -6,7 +6,7 @@ WORKDIR /app
 USER appuser
 
 # Copy requirements first to leverage Docker layer caching
-COPY --chown=appuser:appuser requirements.txt .
+COPY --chown=appuser:appuser requirements.txt . 
 
 # Install dependencies
 RUN pip install --upgrade pip
@@ -22,5 +22,5 @@ COPY --chown=appuser:appuser . .
 # Expose the application's port
 EXPOSE 5000
 
-# Run the Flask application
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+# Run tests by default in the test environment
+CMD ["pytest", "comparetify-backend/app/main_test.py", "--disable-warnings"]

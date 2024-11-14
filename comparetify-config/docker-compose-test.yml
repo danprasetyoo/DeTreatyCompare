@@ -5,7 +5,7 @@ services:
     build:
       context: ../comparetify-backend
       dockerfile: Dockerfile.test
-    image: comparetify-test:1.0  
+    image: comparetify-test:1.0
     container_name: comparetify-backend-test
     ports:
       - "5001:5000"  
@@ -17,7 +17,7 @@ services:
       - ../comparetify-backend:/app
     depends_on:
       - db
-    command: ["pytest", "comparetify-backend/app/main_test.py", "--disable-warnings"]  
+    command: ["pytest", "comparetify-backend/app/main_test.py", "--disable-warnings"]
 
   frontend:
     build:
