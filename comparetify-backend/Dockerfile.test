@@ -6,7 +6,7 @@ WORKDIR /app
 USER appuser
 
 # Salin requirements.txt dan instal dependensi
-COPY --chown=appuser:appuser requirements.txt .
+COPY --chown=appuser:appuser comparetify-backend/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
