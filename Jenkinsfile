@@ -14,8 +14,8 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests...'
-                    if (fileExists('comparetify-config/docker-compose-test.yml')) {
-                        sh 'echo $PASSWORD | sudo -S docker-compose -f comparetify-config/docker-compose-test.yml up --build'
+                    if (fileExists('docker-compose-test.yml')) {
+                        sh 'echo $PASSWORD | sudo -S docker-compose -f docker-compose-test.yml up --build'
                     } else {
                         echo 'Test file docker-compose-test.yml not found, skipping tests.'
                     }
@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        
+
         stage('Build') {
             steps {
                 script {
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying...'
-                    sh 'echo $PASSWORD | sudo -S docker-compose -f comparetify-config/docker-compose.yml up build -d'
+                    sh 'echo $PASSWORD | sudo -S docker-compose -f docker-compose.yml up build -d'
                 }
             }
         }

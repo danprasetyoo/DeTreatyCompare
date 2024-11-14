@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ../comparetify-backend
+      context: comparetify-backend
       dockerfile: Dockerfile
     image: comparetify:1.0
     container_name: comparetify-backend
@@ -12,15 +12,15 @@ services:
     networks:
       - comparetify
     env_file:
-      - ../comparetify-backend/config/.env
+      - comparetify-backend/config/.env
     volumes:
-      - ../comparetify-backend:/app
+      - comparetify-backend:/app
     depends_on:
       - db
 
   frontend:
     build:
-      context: ../comparetify-frontend
+      context: comparetify-frontend
       dockerfile: Dockerfile
     container_name: comparetify-frontend
     ports:
@@ -49,4 +49,4 @@ volumes:
 
 networks:
   comparetify:
-    name: comparetify
+    driver: bridge
