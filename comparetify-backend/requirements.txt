@@ -9,6 +9,6 @@ flask_cors
 flask
 cx_Oracle
 openpyxl
-pytest
+pytest>=6.0
 # dotenv
 # connexion
