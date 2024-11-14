@@ -17,7 +17,7 @@ services:
       - ./comparetify-backend/app:/app  # Mount volume untuk backend ke /app di container
     depends_on:
       - db
-    command: ["pytest", "comparetify-backend/app/test_main.py", "--disable-warnings"]
+    command: ["pytest", "./comparetify-backend/app/test_main.py", "--disable-warnings"]
 
   frontend:
     build:
