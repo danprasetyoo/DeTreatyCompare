@@ -23,7 +23,8 @@ pipeline {
                 script {
                     echo 'Running tests...'
                     if (fileExists('comparetify-config/docker-compose.test.yml')) {
-                        sh 'echo $PASSWORD | sudo -S docker-compose -f comparetify-config/docker-compose.test.yml up --abort-on-container-exit'
+                        sh 'echo $PASSWORD | sudo -S docker-compose -f comparetify-config/docker-compose.test.yml up '
+                        // --abort-on-container-exit
                     } else {
                         echo 'Test file docker-compose.test.yml not found, skipping tests.'
                     }
@@ -33,7 +34,7 @@ pipeline {
         
         stage('Push to Docker Registry') {
             when {
-                branch 'danp/dev'
+                branch 'master'
             }
             steps {
                 script {
