@@ -58,7 +58,7 @@ pipeline {
         always {
             echo 'Cleaning up test containers...'
             script {
-                if (fileExists('docker-compose.test.yml')) {
+                if (fileExists('comparetify-config/docker-compose.test.yml')) {
                     sh 'sudo -S docker-compose -f comparetify-config/docker-compose.test.yml down'
                 }
             }
