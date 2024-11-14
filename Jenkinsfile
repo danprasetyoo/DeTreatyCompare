@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker image...'
-                    sh "docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
+                    sh "sudo docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
                 }
             }
         }
@@ -23,7 +23,7 @@ pipeline {
                 script {
                     echo 'Running tests...'
                     if (fileExists('docker-compose.test.yml')) {
-                        sh 'docker-compose -f docker-compose.test.yml up --abort-on-container-exit'
+                        sh 'sudo docker-compose -f docker-compose.test.yml up --abort-on-container-exit'
                     } else {
                         echo 'Test file docker-compose.test.yml not found, skipping tests.'
                     }
@@ -38,8 +38,8 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing to Docker Registry...'
-                    sh "docker tag ${DOCKER_TAG} ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                    sh "docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "sudo docker tag ${DOCKER_TAG} ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "sudo docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                 }
             }
         }
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying...'
-                    sh 'docker-compose -f docker-compose.yml up -d'
+                    sh 'sudo docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
@@ -59,7 +59,7 @@ pipeline {
             echo 'Cleaning up test containers...'
             script {
                 if (fileExists('docker-compose.test.yml')) {
-                    sh 'docker-compose -f docker-compose.test.yml down'
+                    sh 'sudo docker-compose -f docker-compose.test.yml down'
                 }
             }
         }
