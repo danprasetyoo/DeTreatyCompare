@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying...'
-                    sh 'echo $PASSWORD | sudo -S docker-compose -f ./comparetify-config/docker-compose.yml up -d'
+                    sh 'echo $PASSWORD | sudo -S docker-compose -f ./comparetify-config/docker-compose.yml up -d --builder'
                 }
             }
         }
