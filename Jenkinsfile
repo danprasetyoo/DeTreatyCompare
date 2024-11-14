@@ -23,7 +23,7 @@ pipeline {
                 script {
                     echo 'Running tests...'
                     if (fileExists('docker-compose-test.yml')) {
-                        // sh 'sudo -S docker-compose -f docker-compose-test.yml build'
+                        sh 'sudo -S docker-compose -f docker-compose-test.yml build'
                         sh 'sudo -S docker-compose -f docker-compose-test.yml up --abort-on-container-exit --exit-code-from backend'
                     } else {
                         echo 'Test file docker-compose-test.yml not found, skipping tests.'
