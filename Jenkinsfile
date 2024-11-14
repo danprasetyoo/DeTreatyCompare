@@ -38,8 +38,8 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing to Docker Registry...'
-                    sh "sudo docker tag ${DOCKER_TAG} ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                    sh "sudo docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "sudo -S docker tag ${DOCKER_TAG} ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "sudo -S docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                 }
             }
         }
