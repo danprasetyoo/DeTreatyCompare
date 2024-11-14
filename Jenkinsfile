@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'danprasetyoo/comparetify'
+        DOCKER_USER = 'danprasetyoo'
+        DOCKER_IMAGE = 'comparetify'
         DOCKER_TAG = "${DOCKER_IMAGE}:1.0-${env.BUILD_NUMBER}"
         DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/danprasetyoo/comparetify/general'
         DEPLOY_ENV = 'production'
@@ -38,8 +39,8 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing to Docker Registry...'
-                    sh "sudo -S docker tag ${DOCKER_TAG} ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                    sh "sudo -S docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "sudo -S docker tag ${DOCKER_TAG} ${DOCKER_USER}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    sh "sudo -S docker push ${DOCKER_USER}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                 }
             }
         }
