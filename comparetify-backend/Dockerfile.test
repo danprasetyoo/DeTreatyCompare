@@ -1,18 +1,26 @@
 FROM python:3.9-slim
 
+# Create and set up a non-root user
+RUN useradd -m appuser
 WORKDIR /app
+USER appuser
 
-COPY requirements.txt .
+# Copy requirements first to leverage Docker layer caching
+COPY --chown=appuser:appuser requirements.txt .
 
-# RUN apt-get update && apt-get install -y libaio1
+# Install dependencies
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt --root-user-action=ignore
 
+# Set environment variables
 ENV FLASK_APP=app.main
 ENV FLASK_ENV=development  
 
-COPY . .
+# Copy the rest of the application code
+COPY --chown=appuser:appuser . .
 
+# Expose the application's port
 EXPOSE 5000
 
+# Run the Flask application
 CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
