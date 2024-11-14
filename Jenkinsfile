@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker image...'
-                    sh "sudo -S docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
+                    sh "sudo -S docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile comparetify-backend/"
                 }
             }
         }
