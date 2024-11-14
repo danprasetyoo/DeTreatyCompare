@@ -22,8 +22,8 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests...'
-                    if (fileExists('docker-compose.test.yml')) {
-                        sh 'echo $PASSWORD | sudo -S docker-compose -f ./comparetify-config/docker-compose.test.yml up --abort-on-container-exit'
+                    if (fileExists('comparetify-config/docker-compose.test.yml')) {
+                        sh 'echo $PASSWORD | sudo -S docker-compose -f comparetify-config/docker-compose.test.yml up --abort-on-container-exit'
                     } else {
                         echo 'Test file docker-compose.test.yml not found, skipping tests.'
                     }
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying...'
-                    sh 'echo $PASSWORD | sudo -S docker-compose -f ./comparetify-config/docker-compose.yml up -d --builder'
+                    sh 'echo $PASSWORD | sudo -S docker-compose -f comparetify-config/docker-compose.yml up -d --builder'
                 }
             }
         }
@@ -59,7 +59,7 @@ pipeline {
             echo 'Cleaning up test containers...'
             script {
                 if (fileExists('docker-compose.test.yml')) {
-                    sh 'sudo -S docker-compose -f ./comparetify-config/docker-compose.test.yml down'
+                    sh 'sudo -S docker-compose -f comparetify-config/docker-compose.test.yml down'
                 }
             }
         }
