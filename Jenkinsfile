@@ -8,17 +8,7 @@ pipeline {
         DEPLOY_ENV = 'production'
     }
 
-    stages {
-        stage('Build') {
-            steps {
-                script {
-                    echo 'Building Docker image...'
-                    sh "sudo docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
-                }
-            }
-        }
-        
-        stage('Test') {
+    stage('Test') {
             steps {
                 script {
                     echo 'Running tests...'
@@ -30,6 +20,17 @@ pipeline {
                 }
             }
         }
+        
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Building Docker image...'
+                    sh "sudo docker build -t ${DOCKER_TAG} -f comparetify-backend/Dockerfile ."
+                }
+            }
+        }
+        
         
         stage('Push to Docker Registry') {
             when {
